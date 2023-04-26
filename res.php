@@ -1,3 +1,27 @@
+<?php
+if(isset($_POST['submit'])){
+    $mobile='91'.$_POST['number'];
+}
+$message=$_POST['hello']
+$apiKey = urlencode(‘MzQ3MjM5MzU3MTYyNmQzMzY1Njk2NjMxNTM2ODQ5NGM’);
+$numbers = array($mobile);
+$sender = urlencode(‘TXTLCL’);
+$messages = rawurlencode($message);
+ 
+$numbers = implode(‘,’, $numbers);
+ 
+// Prepare data for POST request
+$data = array(‘apikey’ => $apiKey, ‘numbers’ => $numbers, “sender” => $sender, “message” => $message);
+// Send the POST request with cURL
+$ch = curl_init(‘https://api.textlocal.in/send/’);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+// Process your response here
+echo $response;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,10 +36,10 @@
 	Transaction processing
 </h1>
 	</header>
-	<form id="myForm" >
+	<form id="myForm" method="post">
 		<h3>Confirm your phone number</h3>
 		<input type="tel" id="number" name="number" value="998877667" required>
-		<button onclick="redirectToTransaction()">Confirm</button>
+		<button type="submit" name="submit">Confirm</button>
 	</form>
 
 	<div id="message"></div>
